@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yufan Wu | 吴宇凡 — Ecosystem Services Researcher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-hero: linear-gradient(135deg, #0a1628 0%, #0f3460 40%, #16538d 70%, #1a7ab5 100%);
+            --text: #1e293b;
+            --text-secondary: #64748b;
+            --text-muted: #94a3b8;
+            --accent: #3282b8;
+            --accent-light: #0ea5e9;
+            --accent-dark: #0f4c75;
+            --border: #e2e8f0;
+            --shadow: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 30px rgba(0,0,0,0.12);
+            --nav-bg: rgba(255,255,255,0.92);
+            --tag-bg: linear-gradient(135deg, #0f4c75, #3282b8);
+            --timeline-line: #e2e8f0;
+            --footer-bg: #0a1628;
+        }
+        [data-theme="dark"] {
+            --bg: #0f172a; --bg-card: #1e293b; --text: #e2e8f0;
+            --text-secondary: #94a3b8; --text-muted: #64748b; --border: #334155;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3); --shadow-lg: 0 8px 30px rgba(0,0,0,0.4);
+            --nav-bg: rgba(15,23,42,0.92); --timeline-line: #334155; --footer-bg: #020617;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.6;color:var(--text);background:var(--bg);overflow-x:hidden;transition:background .3s,color .3s}
+        a{color:var(--accent);text-decoration:none;transition:color .2s}
+        a:hover{color:var(--accent-light)}
+        .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+        .reveal.visible{opacity:1;transform:translateY(0)}
+        .reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+        .reveal-left.visible{opacity:1;transform:translateX(0)}
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;background:var(--nav-bg);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--border);transition:background .3s,box-shadow .3s}
+        nav.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.1)}
+        .nav-inner{max-width:1100px;margin:0 auto;padding:0 2rem;height:60px;display:flex;justify-content:space-between;align-items:center}
+        .nav-brand{font-size:1.2rem;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:-.03em}
+        .nav-links{display:flex;gap:.3rem;list-style:none}
+        .nav-links a{padding:.4rem .9rem;border-radius:8px;color:var(--text-secondary);font-size:.9rem;font-weight:500;transition:all .2s}
+        .nav-links a:hover,.nav-links a.active{color:var(--accent);background:rgba(50,130,184,.08)}
+        .theme-toggle{background:none;border:2px solid var(--border);border-radius:50%;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;transition:all .25s;color:var(--text)}
+        .theme-toggle:hover{border-color:var(--accent);transform:rotate(30deg)}
+        .nav-right{display:flex;align-items:center;gap:1rem}
+        .hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg-hero);overflow:hidden}
+        #particle-canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+        .hero-content{position:relative;z-index:2;text-align:center;color:#fff;padding:2rem}
+        .hero-name{font-size:3.8rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.2rem;animation:fadeInUp .8s ease}
+        .hero-name-en{font-size:1.15rem;font-weight:400;opacity:.7;margin-bottom:1.5rem;animation:fadeInUp .8s ease .15s both}
+        .hero-typed-wrapper{min-height:2.2rem;margin-bottom:2rem;animation:fadeInUp .8s ease .3s both}
+        .hero-typed{font-size:1.25rem;font-weight:300;opacity:.9;border-right:2px solid rgba(255,255,255,.7);padding-right:4px;white-space:nowrap}
+        .hero-affiliation{font-size:.95rem;opacity:.6;margin-bottom:2.5rem;animation:fadeInUp .8s ease .45s both}
+        .hero-links{display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;animation:fadeInUp .8s ease .6s both}
+        .hero-link{color:#fff;padding:.55rem 1.5rem;border:1.5px solid rgba(255,255,255,.3);border-radius:30px;font-size:.9rem;font-weight:500;transition:all .3s;backdrop-filter:blur(4px)}
+        .hero-link:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.5);color:#fff;transform:translateY(-2px)}
+        .hero-link.primary{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4)}
+        .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;animation:bounce 2s ease infinite}
+        .scroll-indicator span{display:block;width:24px;height:24px;border-bottom:2px solid rgba(255,255,255,.5);border-right:2px solid rgba(255,255,255,.5);transform:rotate(45deg)}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(25px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes bounce{0%,20%,50%,80%,100%{transform:translateX(-50%) translateY(0)}40%{transform:translateX(-50%) translateY(-8px)}60%{transform:translateX(-50%) translateY(-4px)}}
+        .stats-bar{background:var(--accent-dark);padding:1.5rem 0;position:relative;z-index:2}
+        .stats-grid{max-width:1100px;margin:0 auto;padding:0 2rem;display:flex;justify-content:center;gap:4rem;flex-wrap:wrap}
+        .stat-item{text-align:center;color:#fff}
+        .stat-number{font-size:2.2rem;font-weight:800;letter-spacing:-.03em}
+        .stat-label{font-size:.82rem;text-transform:uppercase;letter-spacing:.1em;opacity:.7;margin-top:.1rem}
+        .container{max-width:1100px;margin:0 auto;padding:0 2rem}
+        section{padding:5rem 0}
+        .section-header{margin-bottom:3rem}
+        .section-label{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-weight:600;margin-bottom:.5rem}
+        .section-title{font-size:2rem;font-weight:700;color:var(--text);letter-spacing:-.03em}
+        .about-content{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+        .about-text{font-size:1.05rem;color:var(--text-secondary);line-height:1.9}
+        .about-text strong{color:var(--text)}
+        .about-highlights{display:grid;gap:1rem}
+        .highlight-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.4rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;box-shadow:var(--shadow)}
+        .highlight-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+        .highlight-icon{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,var(--accent-dark),var(--accent));display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+        .highlight-info h4{font-size:.95rem;font-weight:600;margin-bottom:.15rem}
+        .highlight-info p{font-size:.85rem;color:var(--text-muted)}
+        .research-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+        .research-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.8rem;transition:all .4s cubic-bezier(.16,1,.3,1);box-shadow:var(--shadow);cursor:default;position:relative;overflow:hidden}
+        .research-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent-dark),var(--accent-light));transform:scaleX(0);transition:transform .4s;transform-origin:left}
+        .research-card:hover::before{transform:scaleX(1)}
+        .research-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+        .research-card .icon{font-size:2rem;margin-bottom:.8rem;display:block}
+        .research-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;color:var(--text)}
+        .research-card p{font-size:.92rem;color:var(--text-secondary);line-height:1.65}
+        .pub-timeline{position:relative;padding-left:2.5rem}
+        .pub-timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--timeline-line)}
+        .pub-year-group{margin-bottom:2rem}
+        .pub-year{position:relative;font-size:1.3rem;font-weight:700;color:var(--accent);margin-bottom:1rem;padding-left:.5rem}
+        .pub-year::before{content:'';position:absolute;left:-2.65rem;top:50%;transform:translateY(-50%);width:12px;height:12px;border-radius:50%;background:var(--accent);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--accent)}
+        .pub-item{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.3rem 1.5rem;margin-bottom:.8rem;margin-left:.5rem;transition:all .3s;box-shadow:var(--shadow);position:relative}
+        .pub-item::before{content:'';position:absolute;left:-1.6rem;top:1.6rem;width:8px;height:8px;border-radius:50%;background:var(--text-muted);border:2px solid var(--bg)}
+        .pub-item:hover{border-color:var(--accent);box-shadow:var(--shadow-lg);transform:translateX(4px)}
+        .pub-item .title{font-weight:600;color:var(--text);line-height:1.5;margin-bottom:.3rem;font-size:.95rem}
+        .pub-item .meta{font-size:.85rem;color:var(--text-secondary)}
+        .pub-item .meta em{color:var(--text);font-style:italic}
+        .pub-item .doi{display:inline-block;margin-top:.3rem;font-size:.82rem;color:var(--accent);font-weight:500;padding:.15rem .6rem;border:1px solid var(--accent);border-radius:12px;transition:all .2s}
+        .pub-item .doi:hover{background:var(--accent);color:#fff}
+        .pub-section-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);font-weight:600;margin-bottom:1rem;margin-top:2rem;padding-left:.5rem}
+        .scholar-link{display:inline-flex;align-items:center;gap:.4rem;font-size:.9rem;color:var(--accent);margin-bottom:2rem;font-weight:500}
+        .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem}
+        .skill-card{background:var(--bg-card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;box-shadow:var(--shadow);transition:all .3s}
+        .skill-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+        .skill-card h3{font-size:1rem;font-weight:600;margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+        .skill-tags{display:flex;flex-wrap:wrap;gap:.4rem}
+        .skill-tag{padding:.3rem .75rem;border-radius:20px;font-size:.8rem;font-weight:500;background:var(--tag-bg);color:#fff;transition:transform .2s}
+        .skill-tag:hover{transform:scale(1.05)}
+        .contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;max-width:800px}
+        .contact-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;box-shadow:var(--shadow);transition:all .3s}
+        .contact-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:var(--accent)}
+        .contact-card .icon{font-size:1.5rem;margin-bottom:.6rem}
+        .contact-card h4{font-size:.95rem;font-weight:600;margin-bottom:.3rem}
+        .contact-card a,.contact-card p{font-size:.88rem;color:var(--text-secondary);word-break:break-all}
+        .contact-intro{font-size:1.05rem;color:var(--text-secondary);margin-bottom:2rem;line-height:1.8}
+        footer{background:var(--footer-bg);color:rgba(255,255,255,.6);text-align:center;padding:2rem;font-size:.85rem}
+        .back-to-top{position:fixed;bottom:2rem;right:2rem;width:42px;height:42px;border-radius:50%;background:var(--accent);color:#fff;border:none;cursor:pointer;font-size:1.2rem;display:flex;align-items:center;justify-content:center;opacity:0;transform:translateY(10px);transition:all .3s;z-index:999;box-shadow:0 4px 15px rgba(50,130,184,.4)}
+        .back-to-top.show{opacity:1;transform:translateY(0)}
+        .back-to-top:hover{transform:translateY(-3px);box-shadow:0 6px 20px rgba(50,130,184,.5)}
+        .hamburger{display:none;background:none;border:none;cursor:pointer;padding:.5rem}
+        .hamburger span{display:block;width:22px;height:2px;background:var(--text);margin:5px 0;transition:all .3s;border-radius:2px}
+        @media(max-width:768px){
+            .hamburger{display:block}
+            .nav-links{display:none;position:absolute;top:60px;left:0;right:0;background:var(--nav-bg);backdrop-filter:blur(12px);flex-direction:column;padding:1rem;border-bottom:1px solid var(--border)}
+            .nav-links.open{display:flex}
+            .hero-name{font-size:2.5rem}.hero-typed{font-size:1rem}.stats-grid{gap:2rem}.stat-number{font-size:1.6rem}
+            .about-content{grid-template-columns:1fr}.research-grid{grid-template-columns:1fr}.section-title{font-size:1.6rem}section{padding:3.5rem 0}
+        }
+    </style>
+</head>
+<body>
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-brand">Y. Wu</a>
+            <div class="nav-right">
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#research">Research</a></li>
+                    <li><a href="#publications">Publications</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+                <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <canvas id="particle-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-name">吴宇凡</h1>
+            <p class="hero-name-en">Yufan Wu</p>
+            <div class="hero-typed-wrapper"><span class="hero-typed" id="typedText"></span></div>
+            <p class="hero-affiliation">Ph.D. Candidate · College of Public Administration · Nanjing Agricultural University</p>
+            <div class="hero-links">
+                <a href="https://scholar.google.com/citations?hl=zh-CN&tzom=-480&user=sk1UDe8AAAAJ" class="hero-link primary" target="_blank">📖 Google Scholar</a>
+                <a href="https://github.com/Wuyufan180" class="hero-link" target="_blank">💻 GitHub</a>
+                <a href="mailto:2024209019@stu.njau.edu.cn" class="hero-link">✉️ Email</a>
+            </div>
+        </div>
+        <div class="scroll-indicator"><span></span></div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stats-grid">
+            <div class="stat-item"><div class="stat-number" data-target="7">0</div><div class="stat-label">Publications</div></div>
+            <div class="stat-item"><div class="stat-number" data-target="6">0</div><div class="stat-label">Journal Articles</div></div>
+            <div class="stat-item"><div class="stat-number" data-target="4">0</div><div class="stat-label">SCI/SSCI Papers</div></div>
+            <div class="stat-item"><div class="stat-number" data-target="2025">0</div><div class="stat-label">Latest Publication</div></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <section id="about">
+            <div class="section-header reveal"><p class="section-label">Introduction</p><h2 class="section-title">About Me</h2></div>
+            <div class="about-content">
+                <div class="about-text reveal">
+                    <p>I am a Ph.D. candidate in <strong>Land Resource Management</strong> at the College of Public Administration, Nanjing Agricultural University, China.</p><br>
+                    <p>My research explores the ecological consequences of global economic activities — particularly how <strong>foreign direct investment</strong> and <strong>land use change</strong> reshape ecosystem services across scales. I combine remote sensing, GIS, spatial econometrics, and ecosystem modeling to address these questions.</p><br>
+                    <p>Previously, my work focused on <strong>land use dynamics</strong> and <strong>habitat quality modeling</strong> in the Guangdong–Hong Kong–Macao Greater Bay Area, using PLUS, InVEST, and multi-source remote sensing data.</p>
+                </div>
+                <div class="about-highlights reveal">
+                    <div class="highlight-card"><div class="highlight-icon">🎓</div><div class="highlight-info"><h4>Nanjing Agricultural University</h4><p>Ph.D. in Land Resource Management</p></div></div>
+                    <div class="highlight-card"><div class="highlight-icon">🔬</div><div class="highlight-info"><h4>Core Focus</h4><p>Ecosystem Services &amp; Environmental Impact</p></div></div>
+                    <div class="highlight-card"><div class="highlight-icon">🌍</div><div class="highlight-info"><h4>Scale</h4><p>Regional to Global Analysis (62+ countries)</p></div></div>
+                    <div class="highlight-card"><div class="highlight-icon">📊</div><div class="highlight-info"><h4>Methods</h4><p>GIS · Remote Sensing · Econometrics</p></div></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="research">
+            <div class="section-header reveal"><p class="section-label">What I Study</p><h2 class="section-title">Research Interests</h2></div>
+            <div class="research-grid">
+                <div class="research-card reveal" data-delay="0"><span class="icon">🌍</span><h3>Ecosystem Services Assessment</h3><p>Quantifying the spatial-temporal dynamics of ecosystem services — habitat quality, carbon storage, water yield — at regional to global scales.</p></div>
+                <div class="research-card reveal" data-delay="100"><span class="icon">🏗️</span><h3>Land Use / Land Cover Change</h3><p>Satellite-based monitoring, multi-scenario simulation (PLUS model), and ecological impact assessment of land use transitions.</p></div>
+                <div class="research-card reveal" data-delay="200"><span class="icon">💰</span><h3>FDI &amp; Environmental Externalities</h3><p>Evaluating the heterogeneous environmental effects of foreign direct investment across 62 countries globally.</p></div>
+                <div class="research-card reveal" data-delay="300"><span class="icon">🗺️</span><h3>Habitat Quality Modeling</h3><p>Coupling LULCC simulation with InVEST for multi-scenario habitat quality prediction and ecological risk assessment.</p></div>
+                <div class="research-card reveal" data-delay="400"><span class="icon">📡</span><h3>Geospatial Data Science</h3><p>Leveraging satellite imagery (Landsat, MODIS), GIS, and spatial statistics for large-scale environmental research.</p></div>
+                <div class="research-card reveal" data-delay="500"><span class="icon">📈</span><h3>Spatial Econometrics</h3><p>Applying panel data models, System GMM, and causal inference methods to environmental-economic questions.</p></div>
+            </div>
+        </section>
+
+        <section id="publications">
+            <div class="section-header reveal"><p class="section-label">Research Output</p><h2 class="section-title">Publications</h2></div>
+            <a class="scholar-link reveal" href="https://scholar.google.com/citations?hl=zh-CN&tzom=-480&user=sk1UDe8AAAAJ" target="_blank">📖 Full list &amp; citations → Google Scholar</a>
+            <p class="pub-section-label reveal-left">Journal Articles</p>
+            <div class="pub-timeline">
+                <div class="pub-year-group reveal-left">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-item">
+                        <div class="title">Foreign direct investment exerts heterogeneous impacts on the global ecosystem services values: Evidence from 62 countries globally</div>
+                        <div class="meta"><strong>Wu, Y.</strong>, Wu, W., Tian, S., Li, K., Li, Z., &amp; Li, L. · <em>Environmental Impact Assessment Review</em>, 115, 107973</div>
+                        <a class="doi" href="https://doi.org/10.1016/j.eiar.2025.107973" target="_blank">DOI ↗</a>
+                    </div>
+                </div>
+                <div class="pub-year-group reveal-left">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-item">
+                        <div class="title">Research on the evolution characteristics, driving mechanisms and multi-scenario simulation of habitat quality in the Guangdong–Hong Kong–Macao Greater Bay Area based on multi-model coupling</div>
+                        <div class="meta"><strong>Wu, Y.</strong> et al. · <em>Science of the Total Environment</em>, 171263</div>
+                        <a class="doi" href="https://doi.org/10.1016/j.scitotenv.2024.171263" target="_blank">DOI ↗</a>
+                    </div>
+                </div>
+                <div class="pub-year-group reveal-left">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-item">
+                        <div class="title">The evolution characteristics and driving mechanism of urban construction land in Hong Kong since 1972</div>
+                        <div class="meta"><strong>Wu, Y.</strong> et al. · <em>Applied Sciences</em>, 13(4), 2565</div>
+                        <a class="doi" href="https://doi.org/10.3390/app13042565" target="_blank">DOI ↗</a>
+                    </div>
+                    <div class="pub-item">
+                        <div class="title">Habitat quality evolution characteristics and multi-scenario prediction in Shenzhen based on PLUS and InVEST models</div>
+                        <div class="meta"><strong>Wu, Y.</strong> et al. · <em>Frontiers in Environmental Science</em>, 11, 1146347</div>
+                        <a class="doi" href="https://doi.org/10.3389/fenvs.2023.1146347" target="_blank">DOI ↗</a>
+                    </div>
+                    <div class="pub-item">
+                        <div class="title">1986年以来珠海市海岛海岸线变迁特征与驱动因素</div>
+                        <div class="meta"><strong>吴宇凡</strong> 等 · <em>热带地理</em>, 43(10)</div>
+                        <a class="doi" href="https://doi.org/10.13284/j.cnki.rddl.003684" target="_blank">DOI ↗</a>
+                    </div>
+                    <div class="pub-item">
+                        <div class="title">1985年以来粤港澳大湾区地表水体时空演变特征与驱动因素</div>
+                        <div class="meta"><strong>吴宇凡</strong> 等 · <em>热带地理</em>, 43(6)</div>
+                        <a class="doi" href="https://doi.org/10.13284/j.cnki.rddl.003638" target="_blank">DOI ↗</a>
+                    </div>
+                </div>
+            </div>
+            <p class="pub-section-label reveal-left" style="margin-top:2.5rem">Conference Proceedings</p>
+            <div class="pub-timeline">
+                <div class="pub-year-group reveal-left">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-item">
+                        <div class="title">The evolution characteristics of lakes in the Guangdong–Hong Kong–Macao Greater Bay Area based on Landsat data</div>
+                        <div class="meta"><strong>Wu, Y.</strong> et al. · <em>Proceedings of SPIE</em></div>
+                        <a class="doi" href="https://doi.org/10.1117/12.3020853" target="_blank">DOI ↗</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="section-header reveal"><p class="section-label">Technical Expertise</p><h2 class="section-title">Skills &amp; Tools</h2></div>
+            <div class="skills-grid">
+                <div class="skill-card reveal"><h3>💻 Programming</h3><div class="skill-tags"><span class="skill-tag">Python</span><span class="skill-tag">Stata</span><span class="skill-tag">R</span><span class="skill-tag">MATLAB</span><span class="skill-tag">JavaScript</span></div></div>
+                <div class="skill-card reveal"><h3>🗺️ Geospatial &amp; RS</h3><div class="skill-tags"><span class="skill-tag">ArcGIS Pro</span><span class="skill-tag">QGIS</span><span class="skill-tag">Google Earth Engine</span><span class="skill-tag">ENVI</span></div></div>
+                <div class="skill-card reveal"><h3>📊 Python Ecosystem</h3><div class="skill-tags"><span class="skill-tag">pandas</span><span class="skill-tag">geopandas</span><span class="skill-tag">rasterio</span><span class="skill-tag">xarray</span><span class="skill-tag">matplotlib</span><span class="skill-tag">seaborn</span></div></div>
+                <div class="skill-card reveal"><h3>🔬 Ecosystem Modeling</h3><div class="skill-tags"><span class="skill-tag">InVEST</span><span class="skill-tag">PLUS</span><span class="skill-tag">System GMM</span><span class="skill-tag">Panel Econometrics</span></div></div>
+                <div class="skill-card reveal"><h3>🛰️ Data Sources</h3><div class="skill-tags"><span class="skill-tag">FAOSTAT</span><span class="skill-tag">MODIS</span><span class="skill-tag">Landsat</span><span class="skill-tag">SRTM</span><span class="skill-tag">World Bank WDI</span></div></div>
+                <div class="skill-card reveal"><h3>🔧 Other</h3><div class="skill-tags"><span class="skill-tag">Git</span><span class="skill-tag">LaTeX</span><span class="skill-tag">Gephi</span><span class="skill-tag">Jupyter</span></div></div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="section-header reveal"><p class="section-label">Get in Touch</p><h2 class="section-title">Contact</h2></div>
+            <p class="contact-intro reveal">I am open to collaborations on ecosystem services research, land use modeling, and environmental impact assessment.</p>
+            <div class="contact-grid">
+                <div class="contact-card reveal"><div class="icon">📧</div><h4>Email</h4><a href="mailto:2024209019@stu.njau.edu.cn">2024209019@stu.njau.edu.cn</a></div>
+                <div class="contact-card reveal"><div class="icon">💻</div><h4>GitHub</h4><a href="https://github.com/Wuyufan180" target="_blank">github.com/Wuyufan180</a></div>
+                <div class="contact-card reveal"><div class="icon">🎓</div><h4>Google Scholar</h4><a href="https://scholar.google.com/citations?hl=zh-CN&tzom=-480&user=sk1UDe8AAAAJ" target="_blank">Scholar Profile</a></div>
+            </div>
+        </section>
+    </div>
+
+    <footer><p>&copy; 2025 Yufan Wu · Nanjing Agricultural University</p></footer>
+    <button class="back-to-top" id="backToTop" title="Back to top">↑</button>
+
+    <script>
+    // Particle System
+    (function(){
+        var c=document.getElementById('particle-canvas'),x=c.getContext('2d'),ps=[],m={x:null,y:null,r:120};
+        function resize(){c.width=c.parentElement.offsetWidth;c.height=c.parentElement.offsetHeight}
+        function P(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.vx=(Math.random()-.5)*.6;this.vy=(Math.random()-.5)*.6;this.r=Math.random()*2+.8;this.o=Math.random()*.5+.3}
+        P.prototype.update=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width)this.vx*=-1;if(this.y<0||this.y>c.height)this.vy*=-1;if(m.x!==null){var dx=m.x-this.x,dy=m.y-this.y,d=Math.sqrt(dx*dx+dy*dy);if(d<m.r){var f=(m.r-d)/m.r;this.x-=dx*f*.02;this.y-=dy*f*.02}}};
+        P.prototype.draw=function(){x.beginPath();x.arc(this.x,this.y,this.r,0,Math.PI*2);x.fillStyle='rgba(255,255,255,'+this.o+')';x.fill()};
+        function init(){resize();ps=[];var n=Math.min(Math.floor(c.width*c.height/12000),120);for(var i=0;i<n;i++)ps.push(new P())}
+        function lines(){for(var i=0;i<ps.length;i++)for(var j=i+1;j<ps.length;j++){var dx=ps[i].x-ps[j].x,dy=ps[i].y-ps[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<150){x.beginPath();x.moveTo(ps[i].x,ps[i].y);x.lineTo(ps[j].x,ps[j].y);x.strokeStyle='rgba(255,255,255,'+(0.12*(1-d/150))+')';x.lineWidth=.8;x.stroke()}}}
+        function animate(){x.clearRect(0,0,c.width,c.height);ps.forEach(function(p){p.update();p.draw()});lines();requestAnimationFrame(animate)}
+        c.addEventListener('mousemove',function(e){var r=c.getBoundingClientRect();m.x=e.clientX-r.left;m.y=e.clientY-r.top});
+        c.addEventListener('mouseleave',function(){m.x=null;m.y=null});
+        window.addEventListener('resize',function(){init()});
+        init();animate();
+    })();
+
+    // Typing
+    (function(){
+        var el=document.getElementById('typedText'),phrases=['Ecosystem Services Researcher','Geospatial Data Scientist','Land Use Change Analyst','Environmental Impact Assessor','Spatial Econometrics Practitioner'],pi=0,ci=0,del=false;
+        function type(){var cur=phrases[pi];if(del){el.textContent=cur.substring(0,ci-1);ci--}else{el.textContent=cur.substring(0,ci+1);ci++}
+        var d=del?35:65;if(!del&&ci===cur.length){d=2200;del=true}else if(del&&ci===0){del=false;pi=(pi+1)%phrases.length;d=400}
+        setTimeout(type,d)}
+        setTimeout(type,800);
+    })();
+
+    // Scroll Reveal
+    (function(){
+        var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var d=e.target.dataset.delay||0;setTimeout(function(){e.target.classList.add('visible')},parseInt(d))}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+        document.querySelectorAll('.reveal,.reveal-left').forEach(function(el){obs.observe(el)});
+    })();
+
+    // Counters
+    (function(){
+        var counters=document.querySelectorAll('.stat-number'),counted=false;
+        function go(){if(counted)return;var bar=document.querySelector('.stats-bar'),r=bar.getBoundingClientRect();
+        if(r.top<window.innerHeight&&r.bottom>0){counted=true;counters.forEach(function(c){var t=parseInt(c.dataset.target),s=performance.now();
+        function u(n){var e=n-s,p=Math.min(e/1800,1),v=1-Math.pow(1-p,3);c.textContent=Math.round(v*t);if(p<1)requestAnimationFrame(u)}
+        requestAnimationFrame(u)})}}
+        window.addEventListener('scroll',go);go();
+    })();
+
+    // Active Nav
+    (function(){
+        var secs=document.querySelectorAll('section[id]'),links=document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll',function(){var cur='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-100)cur=s.id});
+        links.forEach(function(l){l.classList.remove('active');if(l.getAttribute('href')==='#'+cur)l.classList.add('active')})});
+    })();
+
+    // Nav shadow
+    window.addEventListener('scroll',function(){document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)});
+
+    // Dark mode
+    (function(){
+        var t=document.getElementById('themeToggle'),s=localStorage.getItem('theme');
+        if(s){document.documentElement.setAttribute('data-theme',s);t.textContent=s==='dark'?'☀️':'🌙'}
+        t.addEventListener('click',function(){var c=document.documentElement.getAttribute('data-theme'),n=c==='dark'?'light':'dark';
+        document.documentElement.setAttribute('data-theme',n);localStorage.setItem('theme',n);t.textContent=n==='dark'?'☀️':'🌙'});
+    })();
+
+    // Back to top
+    (function(){var b=document.getElementById('backToTop');window.addEventListener('scroll',function(){b.classList.toggle('show',window.scrollY>500)});
+    b.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'})})})();
+
+    // Hamburger
+    (function(){var h=document.getElementById('hamburger'),n=document.getElementById('navLinks');
+    h.addEventListener('click',function(){n.classList.toggle('open')});
+    n.querySelectorAll('a').forEach(function(l){l.addEventListener('click',function(){n.classList.remove('open')})})})();
+
+    // 3D Tilt
+    document.querySelectorAll('.research-card').forEach(function(card){
+        card.addEventListener('mousemove',function(e){var r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+        card.style.transform='perspective(800px) rotateY('+x*8+'deg) rotateX('+-y*8+'deg) translateY(-4px)'});
+        card.addEventListener('mouseleave',function(){card.style.transform='perspective(800px) rotateY(0) rotateX(0) translateY(0)'})});
+    </script>
+</body>
+</html>
